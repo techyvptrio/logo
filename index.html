@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#123B5D">
+  <title>Participant Registration</title>
+
+  <style>
+    :root {
+      --navy: #123B5D;
+      --blue: #1D6FA5;
+      --teal: #16A3A8;
+      --cream: #F7F9FC;
+      --white: #FFFFFF;
+      --text: #172B3A;
+      --muted: #6B7C8F;
+      --border: #DCE5ED;
+      --danger: #C0392B;
+      --success: #16794C;
+      --shadow: 0 18px 50px rgba(18, 59, 93, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(22,163,168,.10), transparent 30%),
+        linear-gradient(135deg, #F7F9FC 0%, #EEF5F9 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 16px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .brand-badge {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 12px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--navy), var(--teal));
+      color: white;
+      font-size: 24px;
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(18,59,93,.20);
+    }
+
+    .brand h1 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(26px, 6vw, 34px);
+      letter-spacing: -.5px;
+    }
+
+    .brand p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card {
+      background: rgba(255,255,255,.96);
+      border: 1px solid rgba(220,229,237,.9);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-top {
+      height: 6px;
+      background: linear-gradient(90deg, var(--navy), var(--blue), var(--teal));
+    }
+
+    .form-area {
+      padding: 28px;
+    }
+
+    .section-title {
+      margin: 0 0 5px;
+      font-size: 20px;
+      color: var(--navy);
+    }
+
+    .section-subtitle {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .required {
+      color: var(--danger);
+    }
+
+    input[type="text"],
+    input[type="tel"] {
+      width: 100%;
+      height: 50px;
+      padding: 0 15px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #FBFCFE;
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+      transition: .2s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="tel"]:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 4px rgba(22,163,168,.10);
+      background: white;
+    }
+
+    .upload-box {
+      position: relative;
+      border: 1.5px dashed #AFC2D1;
+      border-radius: 15px;
+      padding: 22px 16px;
+      text-align: center;
+      background: #F8FBFD;
+      transition: .2s ease;
+    }
+
+    .upload-box:hover {
+      border-color: var(--teal);
+      background: #F3FAFA;
+    }
+
+    .upload-icon {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .upload-title {
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 5px;
+    }
+
+    .upload-help {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .preview {
+      display: none;
+      margin: 16px auto 0;
+      max-width: 150px;
+      max-height: 120px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+    }
+
+    .submit-btn {
+      width: 100%;
+      height: 52px;
+      border: 0;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(18,59,93,.18);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 13px 26px rgba(18,59,93,.24);
+    }
+
+    .submit-btn:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .message {
+      display: none;
+      margin-top: 16px;
+      padding: 13px 14px;
+      border-radius: 11px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .message.success {
+      display: block;
+      color: var(--success);
+      background: #EAF7F0;
+      border: 1px solid #BFE6D0;
+    }
+
+    .message.error {
+      display: block;
+      color: var(--danger);
+      background: #FDEDEC;
+      border: 1px solid #F3C4BF;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 15px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 18px 12px; }
+      .form-area { padding: 22px 18px; }
+      .card { border-radius: 20px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <div class="brand">
+      <div class="brand-badge">PR</div>
+      <h1>Participant Registration</h1>
+      <p>Submit your details and upload your logo</p>
+    </div>
+
+    <section class="card">
+      <div class="card-top"></div>
+
+      <div class="form-area">
+        <h2 class="section-title">Registration Form</h2>
+        <p class="section-subtitle">
+          Please enter accurate information. JPG and PNG images only.
+        </p>
+
+        <form id="registrationForm">
+
+          <div class="field">
+            <label for="name">Full Name <span class="required">*</span></label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Enter your full name"
+              autocomplete="name"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="mobile">Mobile Number <span class="required">*</span></label>
+            <input
+              id="mobile"
+              name="mobile"
+              type="tel"
+              inputmode="numeric"
+              maxlength="10"
+              placeholder="Enter 10-digit mobile number"
+              autocomplete="tel"
+              pattern="[0-9]{10}"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="image">Upload Logo <span class="required">*</span></label>
+
+            <div class="upload-box">
+              <div class="upload-icon">🖼️</div>
+              <div class="upload-title">Choose your logo</div>
+              <div class="upload-help">Only JPG, JPEG and PNG files are allowed</div>
+
+              <input
+                id="image"
+                name="image"
+                type="file"
+                accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                required
+              >
+
+              <img id="preview" class="preview" alt="Selected image preview">
+            </div>
+          </div>
+
+          <button id="submitBtn" class="submit-btn" type="submit">
+            Submit Registration
+          </button>
+
+          <div id="message" class="message"></div>
+        </form>
+      </div>
+    </section>
+
+    <div class="footer">
+      Participant Registration Portal
+    </div>
+
+  </main>
+
+  <script>
+    // Your Google Apps Script Web App URL
+    const SCRIPT_URL =
+      "https://script.google.com/macros/s/AKfycbzc1PBYaclEZnZF7XQlIcFTCh6U0qC335iWBta_vRpGGUcFQvOiOpjlBg8wXA3aHx-Nzw/exec";
+
+    const form = document.getElementById("registrationForm");
+    const imageInput = document.getElementById("image");
+    const preview = document.getElementById("preview");
+    const message = document.getElementById("message");
+    const submitBtn = document.getElementById("submitBtn");
+
+    // Mobile number: allow digits only
+    document.getElementById("mobile").addEventListener("input", function () {
+      this.value = this.value.replace(/\D/g, "").slice(0, 10);
+    });
+
+    // Image preview + JPG/PNG validation
+    imageInput.addEventListener("change", function () {
+      message.className = "message";
+      message.textContent = "";
+
+      const file = this.files[0];
+      if (!file) {
+        preview.style.display = "none";
+        return;
+      }
+
+      const allowedTypes = ["image/jpeg", "image/png"];
+
+      if (!allowedTypes.includes(file.type)) {
+        this.value = "";
+        preview.style.display = "none";
+        showMessage("Please select only a JPG, JPEG or PNG image.", "error");
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        preview.src = event.target.result;
+        preview.style.display = "block";
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const mobile = document.getElementById("mobile").value.trim();
+      const file = imageInput.files[0];
+
+      if (!name) {
+        showMessage("Please enter your name.", "error");
+        return;
+      }
+
+      if (!/^[0-9]{10}$/.test(mobile)) {
+        showMessage("Please enter a valid 10-digit mobile number.", "error");
+        return;
+      }
+
+      if (!file) {
+        showMessage("Please select a JPG or PNG image.", "error");
+        return;
+      }
+
+      if (!["image/jpeg", "image/png"].includes(file.type)) {
+        showMessage("Only JPG, JPEG and PNG files are allowed.", "error");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
+      try {
+        const base64 = await fileToBase64(file);
+
+        const data = {
+          name: name,
+          mobile: mobile,
+          fileName: file.name,
+          mimeType: file.type,
+          imageBase64: base64.split(",")[1]
+        };
+
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showMessage("Registration submitted successfully!", "success");
+          form.reset();
+          preview.style.display = "none";
+        } else {
+          throw new Error(result.message || "Submission failed.");
+        }
+
+      } catch (error) {
+        console.error(error);
+        showMessage(
+          "Unable to submit the form. Please check the Apps Script deployment and try again.",
+          "error"
+        );
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Registration";
+      }
+    });
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = "message " + type;
+    }
+  </script>
+</body>
+</html>
